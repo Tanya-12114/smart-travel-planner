@@ -1,0 +1,33 @@
+{
+  "name": "voyagr",
+  "version": "1.0.0",
+  "description": "Smart Travel Planner — Next.js + Express + MongoDB",
+  "scripts": {
+    "dev": "concurrently \"npm run next:dev\" \"npm run server:dev\"",
+    "next:dev": "next dev -p 3000",
+    "next:build": "next build",
+    "next:start": "next start",
+    "server:dev": "nodemon server/index.js",
+    "server:start": "node server/index.js"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "framer-motion": "^11.0.0",
+    "leaflet": "^1.9.4",
+    "mongoose": "^8.9.5",
+    "next": "14",
+    "postcss": "^8.5.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-leaflet": "^4.2.1",
+    "recharts": "^3.8.0",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9"
+  }
+}

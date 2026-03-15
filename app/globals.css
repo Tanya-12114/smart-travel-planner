@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-paper text-ink font-ui;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar       { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-sand rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-muted/40; }
+}
+
+@layer components {
+
+  /* Removed grain overlay — clean look */
+
+  .eyebrow {
+    @apply font-mono text-[0.65rem] uppercase tracking-[0.16em] text-accent font-medium;
+  }
+
+  .page-title {
+    @apply font-display text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-ink;
+  }
+
+  .page-title em {
+    @apply not-italic font-bold text-accent;
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg;
+  }
+
+  .input-base {
+    @apply bg-white border border-sand rounded-lg px-4 py-2.5 font-ui text-sm text-ink
+           outline-none transition-colors focus:border-accent focus:ring-2 focus:ring-accent/10
+           placeholder:text-muted/60;
+  }
+
+  .btn-primary {
+    @apply bg-ink text-white font-ui text-sm font-semibold
+           px-5 py-2.5 rounded-lg transition-colors hover:bg-accent
+           flex items-center gap-2;
+  }
+
+  .btn-ghost {
+    @apply border border-sand text-ink font-ui text-sm font-medium
+           px-4 py-2 rounded-lg transition-all hover:border-accent hover:text-accent;
+  }
+
+  .btn-accent {
+    @apply bg-accent text-white font-ui text-sm font-semibold
+           px-5 py-2.5 rounded-lg transition-colors hover:bg-accent-dk;
+  }
+
+  /* Keep btn-rust as alias so existing code doesn't break */
+  .btn-rust {
+    @apply bg-accent text-white font-ui text-sm font-semibold
+           px-5 py-2.5 rounded-lg transition-colors hover:bg-accent-dk;
+  }
+
+  .tag-pill {
+    @apply bg-paper text-muted font-mono text-[0.6rem] tracking-wider uppercase
+           px-2 py-0.5 rounded border border-sand;
+  }
+}
