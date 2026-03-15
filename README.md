@@ -13,7 +13,7 @@ A full-stack travel planning app built with **Next.js**, **Tailwind CSS**, **Fra
 | Animations | Framer Motion                     |
 | Backend    | Node.js + Express.js              |
 | Database   | MongoDB + Mongoose                |
-| Fonts      | Google Fonts (Plus Jakarta Sans, JetBrains Mono)|
+| Fonts      | Google Fonts (Fraunces, Syne, DM Mono) |
 
 ---
 
