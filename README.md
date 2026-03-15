@@ -17,50 +17,6 @@ A full-stack travel planning app built with **Next.js**, **Tailwind CSS**, **Fra
 
 ---
 
-## Project Structure
-
-```
-voyagr/
-├── app/                        # Next.js App Router
-│   ├── layout.js               # Root layout with Sidebar
-│   ├── globals.css             # Tailwind + global styles
-│   ├── page.js                 # /discover
-│   ├── itinerary/page.js       # /itinerary
-│   ├── map/page.js             # /map
-│   ├── budget/page.js          # /budget
-│   └── weather/page.js         # /weather
-│
-├── components/
-│   ├── layout/
-│   │   └── Sidebar.js          # Navigation sidebar
-│   └── ui/
-│       ├── PageHeader.js       # Reusable animated header
-│       ├── DestinationCard.js  # Destination cards
-│       ├── DayBlock.js         # Itinerary day with drag-and-drop
-│       └── MapCanvas.js        # Canvas world map
-│
-├── lib/
-│   ├── api.js                  # Centralised API client
-│   └── destinations.js         # Destination data + helpers
-│
-├── server/                     # Express backend
-│   ├── index.js                # Server entry point
-│   ├── models/
-│   │   ├── Trip.js             # Trip + Day + Event schema
-│   │   └── Expense.js          # Expense schema
-│   └── routes/
-│       ├── trips.js            # CRUD /api/trips
-│       ├── expenses.js         # CRUD /api/expenses
-│       └── weather.js          # GET /api/weather
-│
-├── .env.local                  # Environment variables
-├── next.config.js              # Next.js + API proxy config
-├── tailwind.config.js
-└── postcss.config.js
-```
-
----
-
 ## Setup & Installation
 
 ### Prerequisites
