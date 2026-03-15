@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import PageHeader from "@/components/ui/PageHeader";
 import DayBlock from "@/components/ui/DayBlock";
 import { tripsApi } from "@/lib/api";
-import { guessEmoji } from "@/lib/destinations";
 
 export default function ItineraryPage() {
   const [trips, setTrips]       = useState([]);
