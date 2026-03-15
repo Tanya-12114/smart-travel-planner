@@ -84,9 +84,15 @@ npm run server:start  # Express
 ---
 
 ## Features
-
-- **Discover** — Search 8 curated destinations with animated cards
-- **Itinerary** — Day-by-day builder with Framer Motion drag-and-drop reordering, auto-saved to MongoDB
-- **Map** — HTML5 Canvas world map that auto-plots itinerary destinations with route lines
-- **Budget** — Per-trip expense tracker with animated progress bar, category breakdown, stored in MongoDB
-- **Weather** — 7-day forecast for any destination with quick-pick shortcuts
+ 
+- **Authentication** — Secure login and registration with JWT + cookies. Each user's data is fully private, session lasts 7 days.
+ 
+- **Discover** — Search any city or country worldwide. Live results include best travel time, avg daily cost in rupees, and a Wikipedia description.
+ 
+- **Itinerary** — Day-by-day trip builder with event add/reorder. Auto-assigns SVG icons by event type and saves to MongoDB in real time.
+ 
+- **Map** — Interactive world map with great-circle flight routes from your location to each trip destination. Select one destination at a time.
+ 
+- **Budget** — Track trip expenses in rupees by category (flights, hotels, food, etc.) with an animated progress bar and per-trip budget limit.
+ 
+- **Weather** — Live 7-day forecast for any city via Open-Meteo (no API key needed). Auto-shows weather for all your itinerary destinations.
