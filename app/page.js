@@ -81,6 +81,9 @@ export default function DiscoverPage() {
       await tripsApi.create({
         title: `Trip to ${selected.name}`,
         destination: selected.name,
+        // Save coordinates so the map can pin any destination
+        lat: selected.coordinates?.lat ?? null,
+        lng: selected.coordinates?.lon ?? selected.coordinates?.lng ?? null,
         days: [
           {
             date: "",

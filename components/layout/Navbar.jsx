@@ -21,7 +21,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="px-6 py-6 border-b border-white/10 md:px-0 md:py-5 md:flex md:justify-center lg:px-6 lg:py-6 lg:block">
         <span className="font-display text-lg font-bold text-white tracking-tight md:hidden lg:block">
-          Voyagr
+          VOYAGR
         </span>
         <span className="hidden md:block lg:hidden font-display text-lg text-accent font-bold">V</span>
       </div>

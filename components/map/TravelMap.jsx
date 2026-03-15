@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-// Fix Leaflet's broken default icon paths in Next.js / webpack
+// Fix Leaflet's broken default icon in Next.js / webpack
 function FixLeafletIcons() {
   const map = useMap();
   useEffect(() => {
@@ -18,44 +18,14 @@ function FixLeafletIcons() {
   return null;
 }
 
-// Real-world lat/lng keyed by destination id
-const DEST_COORDS = {
-  "tokyo":     [35.6762, 139.6503],
-  "santorini": [36.3932, 25.4615],
-  "patagonia": [-50.9423, -73.4068],
-  "marrakech": [31.6295, -7.9811],
-  "kyoto":     [35.0116, 135.7681],
-  "reykjavik": [64.1466, -21.9426],
-  "bali":      [-8.3405, 115.0920],
-  "new-york":  [40.7128, -74.0060],
-};
-
 /**
- * Accepts either:
- *  - pins: array of destination objects (from DESTINATIONS) with an `id` field
- *  - trips: raw trip objects (fallback — tries to match destination name to coords)
+ * trips — array of trip objects, each with:
+ *   { _id, title, destination, lat, lng }
+ * lat/lng are saved at trip creation from Nominatim coordinates
  */
-export default function TravelMap({ trips = [], pins = [] }) {
-  // Build valid markers — skip any with missing coords
-  const markers = pins.length
-    ? pins
-        .map((p) => {
-          const coords = DEST_COORDS[p.id];
-          if (!coords) return null;
-          return { coords, label: p.name, sub: p.country, emoji: p.emoji };
-        })
-        .filter(Boolean)
-    : trips
-        .map((t) => {
-          // Find matching dest by destination string
-          const key = Object.keys(DEST_COORDS).find((k) =>
-            t.destination?.toLowerCase().includes(k.replace("-", " "))
-          );
-          const coords = key ? DEST_COORDS[key] : null;
-          if (!coords) return null;
-          return { coords, label: t.title || t.name, sub: t.destination };
-        })
-        .filter(Boolean);
+export default function TravelMap({ trips = [] }) {
+  // Filter to only valid coordinates (already done in parent but belt+suspenders)
+  const markers = trips.filter((t) => t.lat != null && t.lng != null);
 
   return (
     <MapContainer
@@ -66,14 +36,23 @@ export default function TravelMap({ trips = [], pins = [] }) {
     >
       <FixLeafletIcons />
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        subdomains="abcd"
+        maxZoom={19}
       />
-      {markers.map((m, i) => (
-        <Marker key={i} position={m.coords}>
+      {markers.map((t) => (
+        <Marker key={t._id} position={[t.lat, t.lng]}>
           <Popup>
-            <strong>{m.emoji} {m.label}</strong>
-            {m.sub && <><br /><span style={{ color: "#7a7060", fontSize: "0.8em" }}>{m.sub}</span></>}
+            <strong>{t.destination || t.title}</strong>
+            {t.days?.length > 0 && (
+              <>
+                <br />
+                <span style={{ color: "#6b7280", fontSize: "0.8em" }}>
+                  {t.days.length} day{t.days.length !== 1 ? "s" : ""} planned
+                </span>
+              </>
+            )}
           </Popup>
         </Marker>
       ))}
