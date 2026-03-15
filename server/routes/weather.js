@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
 
   try {
     // ── Step 1: Geocode city name → lat/lon via Nominatim ────
-    const geoUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1&addressdetails=1`;
+    const geoUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(city)}&format=json&limit=1&addressdetails=1&namedetails=1&accept-language=en`;
     const geoRes = await fetch(geoUrl, {
       headers: { "User-Agent": "VoyagrTravelApp/1.0" },
     });
@@ -47,7 +47,9 @@ router.get("/", async (req, res) => {
     const lat     = parseFloat(place.lat);
     const lon     = parseFloat(place.lon);
     const addr    = place.address || {};
-    const cityName = place.name || addr.city || addr.town || city;
+    const names   = place.namedetails || {};
+    // Prefer explicit English name, fall back to generic name
+    const cityName = names["name:en"] || names["name"] || place.name || addr.city || addr.town || city;
     const country  = addr.country_code?.toUpperCase() || "";
 
     // ── Step 2: Fetch weather from Open-Meteo ────────────────

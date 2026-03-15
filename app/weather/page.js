@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PageHeader from "@/components/ui/PageHeader";
 import { weatherApi } from "@/lib/api";
@@ -192,9 +192,42 @@ function WeatherIcon({ type, size }) {
 /* ─── Page ────────────────────────────────────────────── */
 
 export default function WeatherPage() {
-  const [city, setCity]     = useState("");
-  const [data, setData]     = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [city, setCity]         = useState("");
+  const [data, setData]         = useState(null);
+  const [loading, setLoading]   = useState(false);
+  // Itinerary destinations weather
+  const [tripWeather, setTripWeather] = useState([]);
+  const [tripsLoading, setTripsLoading] = useState(true);
+
+  // Load weather for all itinerary trips on mount
+  useEffect(() => {
+    async function loadTripWeather() {
+      try {
+        const res  = await fetch("/api/trips");
+        const trips = await res.json();
+        // Get unique destination names
+        const destinations = [...new Set(
+          trips.map((t) => t.destination).filter(Boolean)
+        )];
+        if (!destinations.length) { setTripsLoading(false); return; }
+        // Fetch weather for each in parallel
+        const results = await Promise.all(
+          destinations.map(async (dest) => {
+            try {
+              const w = await weatherApi.get(dest);
+              return w;
+            } catch { return null; }
+          })
+        );
+        setTripWeather(results.filter(Boolean));
+      } catch {
+        setTripWeather([]);
+      } finally {
+        setTripsLoading(false);
+      }
+    }
+    loadTripWeather();
+  }, []);
 
   async function lookup() {
     if (!city.trim()) return;
@@ -215,7 +248,7 @@ export default function WeatherPage() {
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && lookup()}
-          placeholder="City or destination…"
+          placeholder="Search any city or destination…"
           className="input-base flex-1"
         />
         <button onClick={lookup} disabled={loading} className="btn-primary">
@@ -223,9 +256,10 @@ export default function WeatherPage() {
         </button>
       </div>
 
+      {/* ── Manual search result ── */}
       <AnimatePresence mode="wait">
-        {data ? (
-          <motion.div key={data.city} initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0 }}>
+        {data && (
+          <motion.div key={data.city} initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0 }} className="mb-12">
 
             {/* Hero card */}
             <div className="bg-ink rounded-2xl p-8 mb-5 flex items-center gap-10 flex-wrap">
@@ -266,33 +300,87 @@ export default function WeatherPage() {
                 </motion.div>
               ))}
             </div>
-
           </motion.div>
-        ) : (
-          !loading && (
-            <motion.div key="empty" initial={{ opacity:0 }} animate={{ opacity:1 }}
-              className="text-center py-24 text-muted"
-            >
-              <p className="text-5xl mb-4">◐</p>
-              <p className="font-display italic text-xl">Enter a destination to see its forecast.</p>
-            </motion.div>
-          )
         )}
       </AnimatePresence>
 
-      {/* Quick picks */}
+      {/* ── Itinerary destinations weather ── */}
       {!data && (
-        <div className="mt-16">
-          <p className="eyebrow mb-4">Popular destinations</p>
-          <div className="flex flex-wrap gap-2">
-            {["Tokyo","Santorini","Bali","Reykjavík","Marrakech","New York","Paris","Dubai"].map((c) => (
-              <button key={c}
-                onClick={() => { setCity(c); setTimeout(lookup, 0); }}
-                className="tag-pill cursor-pointer hover:bg-accent hover:text-white transition-colors py-1.5 px-3 text-xs"
-              >{c}</button>
-            ))}
+        <>
+          {tripsLoading ? (
+            <div className="flex gap-4 flex-wrap mb-10">
+              {[1,2,3].map((n) => (
+                <div key={n} className="bg-white border border-sand rounded-2xl p-6 w-72 animate-pulse">
+                  <div className="h-4 bg-sand rounded w-1/2 mb-4"/>
+                  <div className="h-10 bg-sand rounded w-1/3 mb-2"/>
+                  <div className="h-3 bg-sand rounded w-2/3"/>
+                </div>
+              ))}
+            </div>
+          ) : tripWeather.length > 0 ? (
+            <>
+              <p className="eyebrow mb-5">Your itinerary destinations</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-12">
+                {tripWeather.map((w, i) => (
+                  <motion.div
+                    key={w.city}
+                    initial={{ opacity:0, y:12 }}
+                    animate={{ opacity:1, y:0 }}
+                    transition={{ delay: i * 0.08 }}
+                    className="bg-ink rounded-2xl p-6 cursor-pointer hover:ring-2 hover:ring-accent/40 transition-all"
+                    onClick={() => setData(w)}
+                  >
+                    <div className="flex items-center gap-4 mb-4">
+                      <WeatherIcon type={resolveType(w.current.icon + " " + w.current.desc)} size="lg" />
+                      <div>
+                        <p className="font-ui font-semibold text-white text-base">{w.city}</p>
+                        <p className="font-display text-4xl font-black text-blue-300 tracking-tight">
+                          {w.current.temp}°C
+                        </p>
+                      </div>
+                    </div>
+                    <p className="font-mono text-[0.65rem] uppercase tracking-widest text-muted mb-3">
+                      {w.current.desc}
+                    </p>
+                    <div className="grid grid-cols-2 gap-1">
+                      {[["Humidity", w.current.humidity+"%"],["Wind",w.current.wind],
+                        ["Feels like",w.current.feelsLike+"°C"],["Visibility",w.current.visibility]
+                      ].map(([k,v]) => (
+                        <div key={k} className="flex gap-2 font-mono text-[0.65rem]">
+                          <span className="text-muted">{k}</span>
+                          <span className="text-white/60">{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }}
+              className="text-center py-16 text-muted"
+            >
+              <p className="text-5xl mb-4">◐</p>
+              <p className="font-display italic text-xl mb-2">No itinerary trips yet.</p>
+              <p className="font-mono text-[0.65rem] uppercase tracking-widest text-muted/60">
+                Add destinations in Discover to see their weather here
+              </p>
+            </motion.div>
+          )}
+
+          {/* Quick picks */}
+          <div className="mt-4">
+            <p className="eyebrow mb-4">Quick search</p>
+            <div className="flex flex-wrap gap-2">
+              {["Tokyo","Santorini","Bali","Reykjavík","Marrakech","New York","Paris","Dubai"].map((c) => (
+                <button key={c}
+                  onClick={() => { setCity(c); setTimeout(lookup, 0); }}
+                  className="tag-pill cursor-pointer hover:bg-accent hover:text-white transition-colors py-1.5 px-3 text-xs"
+                >{c}</button>
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
