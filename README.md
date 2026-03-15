@@ -1,6 +1,6 @@
 # Voyagr — Smart Travel Planner
 
-A full-stack travel planning app built with **Next.js**, **Tailwind CSS**, **Framer Motion**, **Express.js**, and **MongoDB**.
+A full-stack travel planning app built with **Next.js**, **Tailwind CSS**, **Framer Motion**, **Express.js**, and **MongoDB** with **JWT authentication**, allowing users to register, plan trips, manage itineraries, track travel expenses, visualize destinations on maps, and access weather data.
 
 ---
 
