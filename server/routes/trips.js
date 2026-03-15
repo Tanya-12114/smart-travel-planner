@@ -2,8 +2,11 @@
 const express = require("express");
 const router  = express.Router();
 const Trip    = require("../models/Trip");
+const auth    = require("../middleware/auth");
 
-// Server-side geocode via Nominatim (no CORS issue here)
+// All trip routes require authentication
+router.use(auth);
+
 async function geocodeDestination(destination) {
   if (!destination) return null;
   try {
@@ -17,18 +20,16 @@ async function geocodeDestination(destination) {
   }
 }
 
-// GET all trips — auto-geocode any missing coordinates
+// GET all trips — only for logged-in user
 router.get("/", async (req, res) => {
   try {
-    const trips = await Trip.find().sort({ updatedAt: -1 });
+    const trips = await Trip.find({ userId: req.user._id }).sort({ updatedAt: -1 });
 
-    // Enrich trips missing coords — geocode + persist so next load is instant
     const enriched = await Promise.all(
       trips.map(async (trip) => {
         if (trip.lat != null && trip.lng != null) return trip.toObject();
         const coords = await geocodeDestination(trip.destination || trip.title);
         if (coords) {
-          // Persist coords so we only geocode once
           await Trip.findByIdAndUpdate(trip._id, coords);
           return { ...trip.toObject(), ...coords };
         }
@@ -42,10 +43,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET single trip
+// GET single trip — must belong to user
 router.get("/:id", async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.id);
+    const trip = await Trip.findOne({ _id: req.params.id, userId: req.user._id });
     if (!trip) return res.status(404).json({ error: "Trip not found" });
     res.json(trip);
   } catch (err) {
@@ -53,20 +54,19 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST create trip — geocode if coords not provided
+// POST create trip — attach userId
 router.post("/", async (req, res) => {
   try {
     const { title, destination, days, lat, lng } = req.body;
 
     let coords = { lat: lat ?? null, lng: lng ?? null };
-
-    // If no coords sent, geocode on the server right now
     if (coords.lat == null && destination) {
       const geocoded = await geocodeDestination(destination);
       if (geocoded) coords = geocoded;
     }
 
     const trip = await Trip.create({
+      userId: req.user._id,
       title,
       destination,
       days: days || [],
@@ -80,11 +80,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PUT update trip
+// PUT update trip — must belong to user
 router.put("/:id", async (req, res) => {
   try {
-    const trip = await Trip.findByIdAndUpdate(
-      req.params.id,
+    const trip = await Trip.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
       { ...req.body, updatedAt: new Date() },
       { new: true, runValidators: true }
     );
@@ -95,10 +95,11 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE trip
+// DELETE trip — must belong to user
 router.delete("/:id", async (req, res) => {
   try {
-    await Trip.findByIdAndDelete(req.params.id);
+    const trip = await Trip.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    if (!trip) return res.status(404).json({ error: "Trip not found" });
     res.json({ message: "Trip deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });

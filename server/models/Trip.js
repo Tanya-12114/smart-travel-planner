@@ -13,10 +13,11 @@ const DaySchema = new mongoose.Schema({
 
 const TripSchema = new mongoose.Schema(
   {
+    // Link every trip to its owner
+    userId:      { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, index: true },
     title:       { type: String, required: true, trim: true },
     destination: { type: String, default: "" },
     days:        { type: [DaySchema], default: [] },
-    // Coordinates saved at trip creation so map works for any destination
     lat:         { type: Number, default: null },
     lng:         { type: Number, default: null },
   },
