@@ -4,12 +4,26 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PageHeader from "@/components/ui/PageHeader";
 import { tripsApi, expensesApi } from "@/lib/api";
-import { CATEGORY_EMOJIS } from "@/lib/destinations";
+import { CATEGORY_ICONS, FlightIcon, HotelIcon, FoodIcon, ActivitiesIcon, TransportIcon, MiscIcon } from "@/components/ui/Icons";
 
 const CATEGORIES = ["flights","hotels","food","activities","transport","misc"];
 
+const CATEGORY_LABELS = {
+  flights:    "Flights",
+  hotels:     "Hotels",
+  food:       "Food",
+  activities: "Activities",
+  transport:  "Transport",
+  misc:       "Misc",
+};
+
 function fmt(n) {
   return "₹" + Number(n).toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+}
+
+function CategoryIcon({ category, size = 16, className = "" }) {
+  const Icon = CATEGORY_ICONS[category] || MiscIcon;
+  return <Icon size={size} className={className} />;
 }
 
 export default function BudgetPage() {
@@ -168,15 +182,24 @@ export default function BudgetPage() {
               placeholder="Amount (₹)"
               className="input-base w-36"
             />
-            <select
-              value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value })}
-              className="input-base w-40"
-            >
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>{CATEGORY_EMOJIS[c]} {c.charAt(0).toUpperCase() + c.slice(1)}</option>
-              ))}
-            </select>
+
+            {/* Category dropdown — custom styled, no emojis */}
+            <div className="relative">
+              <select
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                className="input-base w-44 pl-9 appearance-none cursor-pointer"
+              >
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>
+                ))}
+              </select>
+              {/* SVG icon overlay on the select */}
+              <span className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-ink/60">
+                <CategoryIcon category={form.category} size={15} />
+              </span>
+            </div>
+
             <button onClick={addExpense} className="btn-rust">Add</button>
           </div>
 
@@ -191,13 +214,21 @@ export default function BudgetPage() {
                   exit={{ opacity: 0, x: 12 }}
                   className="flex items-center gap-3 px-4 py-3 bg-cream border border-sand rounded-lg"
                 >
-                  <span className="text-lg">{CATEGORY_EMOJIS[exp.category] || "◇"}</span>
+                  <span className="text-ink/60 flex-shrink-0">
+                    <CategoryIcon category={exp.category} size={17} />
+                  </span>
                   <span className="flex-1 font-ui text-sm text-ink">{exp.label}</span>
                   <span className="font-mono text-sm font-medium text-forest">{fmt(exp.amount)}</span>
                   <button
                     onClick={() => removeExpense(exp._id)}
-                    className="text-muted hover:text-red-500 transition-colors text-lg leading-none px-1"
-                  >×</button>
+                    className="text-muted hover:text-red-500 transition-colors leading-none px-1 flex items-center"
+                    aria-label="Remove expense"
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
                 </motion.div>
               ))}
             </AnimatePresence>

@@ -1,4 +1,5 @@
 "use client";
+import { GlobeIcon, MapPinIcon } from "@/components/ui/Icons";
 // app/itinerary/page.js
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -161,8 +162,8 @@ export default function ItineraryPage() {
               animate={{ opacity: 1 }}
               className="text-center py-20 text-ink"
             >
-              <p className="text-4xl mb-4">◎</p>
-              <p className="font-display italic text-lg">No days yet. Add one to start planning.</p>
+              <GlobeIcon size={36} className="text-ink/30 mx-auto mb-4" />
+              <p className="font-ui text-base font-medium text-ink">No days yet. Add one to start planning.</p>
             </motion.div>
           )}
         </div>
@@ -172,9 +173,9 @@ export default function ItineraryPage() {
           animate={{ opacity: 1 }}
           className="text-center py-24 text-ink"
         >
-          <p className="text-4xl mb-4">◈</p>
-          <p className="font-display italic text-xl mb-6">No trips yet.</p>
-          <button onClick={createTrip} className="btn-rust">Create your first trip →</button>
+          <MapPinIcon size={36} className="text-ink/30 mx-auto mb-4" />
+          <p className="font-ui text-lg font-medium text-ink mb-6">No trips yet.</p>
+          <button onClick={createTrip} className="btn-rust">Create your first trip</button>
         </motion.div>
       )}
     </div>

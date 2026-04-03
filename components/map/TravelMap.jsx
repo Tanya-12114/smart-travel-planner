@@ -121,10 +121,11 @@ function RouteArcs({ origin, destinations }) {
         icon: L.divIcon({
           className: "",
           html: `<div style="
-            font-size:16px;
+            width:20px;height:20px;
             transform:rotate(${angle}deg);
             filter:drop-shadow(0 1px 2px rgba(0,0,0,0.4));
-          ">✈</div>`,
+            color:#2563eb;
+          "><svg width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-1 0-1.5.5-3.5 2.5L11 8 4.8 6.2c-.5-.1-1 .1-1.3.5l-.5.7c-.2.4-.1.9.3 1.1L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.7c.3.4.8.5 1.1.3l.7-.5c.4-.3.6-.8.5-1.3z'/></svg></div>`,
           iconSize: [20, 20],
           iconAnchor: [10, 10],
         }),

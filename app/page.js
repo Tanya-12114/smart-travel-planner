@@ -1,4 +1,5 @@
 "use client";
+import { GlobeIcon, LocationIcon, CurrencyIcon, CalendarIcon, CheckIcon } from "@/components/ui/Icons";
 // app/page.js — Discover / Search
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -88,8 +89,8 @@ export default function DiscoverPage() {
           {
             date: "",
             events: [
-              { name: `Arrive in ${selected.name}`, emoji: "✈️" },
-              { name: `Explore ${selected.name}`,   emoji: "📌" },
+              { name: `Arrive in ${selected.name}`, icon: "flight" },
+              { name: `Explore ${selected.name}`,   icon: "pin" },
             ],
           },
         ],
@@ -185,7 +186,7 @@ export default function DiscoverPage() {
             animate={{ opacity: 1 }}
             className="col-span-full text-center py-16"
           >
-            <p className="text-3xl mb-3">◎</p>
+            <GlobeIcon size={36} className="text-ink/30 mx-auto mb-3" />
             <p className="font-ui text-base font-medium text-ink text-lg">No results for &ldquo;{query}&rdquo;</p>
             <p className="font-ui text-sm text-ink mt-2">Try a different spelling or broader term</p>
           </motion.div>
@@ -226,16 +227,16 @@ export default function DiscoverPage() {
                 disabled={loading}
                 className="btn-rust whitespace-nowrap"
               >
-                {loading ? "Adding…" : "Add to Itinerary →"}
+                {loading ? "Adding…" : "Add to Itinerary"}
               </button>
             </div>
 
             <p className="text-sm text-ink font-ui mb-2">
-              <strong className="text-ink">📍 {selected.country}</strong>
+              <LocationIcon size={14} className="inline mr-1 text-ink" />{selected.country}
               &nbsp;·&nbsp;
-              <strong className="text-ink">🗓 Best time:</strong> {selected.bestTime}
+              <CalendarIcon size={14} className="inline mr-1 text-ink" />Best time: {selected.bestTime}
               &nbsp;·&nbsp;
-              <strong className="text-ink">💰 Avg cost:</strong> {selected.avgCost}
+              <CurrencyIcon size={14} className="inline mr-1 text-ink" />Avg cost: {selected.avgCost}
             </p>
             <p className="font-ui text-base text-ink text-base leading-relaxed">
               {selected.description}
@@ -254,7 +255,7 @@ export default function DiscoverPage() {
             className="fixed bottom-8 right-8 bg-ink text-white font-ui text-sm font-semibold
                        px-5 py-3 rounded-lg shadow-2xl z-50"
           >
-            ✓ {toast}
+            <CheckIcon size={15} className="inline mr-1.5" />{toast}
           </motion.div>
         )}
       </AnimatePresence>

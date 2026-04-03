@@ -1,4 +1,5 @@
 "use client";
+import { WarningIcon, FlightIcon, GlobeIcon } from "@/components/ui/Icons";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import TravelMap from "@/components/map/TravelMap";
@@ -45,7 +46,7 @@ export default function MapPage() {
 
       {locStatus === "denied" && mappable.length > 0 && (
         <div className="mb-4 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2.5 max-w-xl">
-          <span className="text-amber-500 text-sm">⚠</span>
+          <WarningIcon size={16} className="text-amber-500 flex-shrink-0" />
           <p className="font-ui text-sm text-amber-700">
             Location access denied — enable it to see flight routes from your location.
           </p>
@@ -77,7 +78,7 @@ export default function MapPage() {
         {/* Route badge */}
         {userLocation && activeTrip && (
           <div className="absolute top-4 left-4 bg-ink/80 rounded-lg px-3 py-1.5 z-10 flex items-center gap-2">
-            <span className="text-sm">✈</span>
+            <FlightIcon size={15} className="text-white" />
             <p className="font-ui text-sm tracking-normal text-white/70">
               Route to {activeTrip.destination || activeTrip.title}
             </p>
@@ -87,8 +88,8 @@ export default function MapPage() {
         {/* Empty state */}
         {!loading && mappable.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center flex-col gap-3 text-ink z-10">
-            <span className="text-4xl">◎</span>
-            <p className="font-display italic text-lg">
+            <GlobeIcon size={40} className="text-ink/30 mx-auto mb-2" />
+            <p className="font-ui text-base font-medium text-ink">
               Add destinations from Discover to plot your route.
             </p>
           </div>
@@ -127,7 +128,7 @@ export default function MapPage() {
                     </p>
                     {isActive && (
                       <p className="font-ui text-sm tracking-normal text-white/60 mt-1.5">
-                        ✈ Route shown
+                        <FlightIcon size={13} className="inline mr-1" />Route shown
                       </p>
                     )}
                   </motion.button>
