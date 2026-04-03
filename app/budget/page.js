@@ -73,7 +73,7 @@ export default function BudgetPage() {
 
   if (loading) return (
     <div className="p-12 flex items-center justify-center min-h-screen">
-      <p className="font-display italic text-muted text-xl animate-pulse">Loading…</p>
+      <p className="font-ui text-base font-medium text-ink animate-pulse">Loading…</p>
     </div>
   );
 
@@ -94,7 +94,7 @@ export default function BudgetPage() {
           </button>
         ))}
         {!trips.length && (
-          <p className="font-display italic text-muted">No trips yet — create one in Itinerary.</p>
+          <p className="font-ui text-base font-medium text-ink">No trips yet — create one in Itinerary.</p>
         )}
       </div>
 
@@ -113,7 +113,7 @@ export default function BudgetPage() {
                 animate={{ opacity: 1, y: 0 }}
                 className={`rounded-xl p-6 border ${dark ? "bg-ink border-ink" : "bg-cream border-sand"}`}
               >
-                <p className={`font-mono text-[0.62rem] uppercase tracking-widest mb-2 ${dark ? "text-blue-300" : "text-muted"}`}>
+                <p className={`font-ui text-sm font-medium mb-2 ${dark ? "text-white/80" : "text-ink"}`}>
                   {label}
                 </p>
                 <p className={`font-display text-4xl font-bold tracking-tight ${dark ? "text-white" : "text-ink"}`}>
@@ -127,8 +127,8 @@ export default function BudgetPage() {
                     onBlur={saveBudget}
                     onKeyDown={(e) => e.key === "Enter" && saveBudget()}
                     placeholder="Set budget…"
-                    className="mt-3 w-full bg-transparent border-b border-sand text-sm text-muted outline-none
-                               focus:border-accent placeholder:text-muted/60 pb-1 transition-colors"
+                    className="mt-3 w-full bg-transparent border-b border-sand text-sm text-ink outline-none
+                               focus:border-accent placeholder:text-muted pb-1 transition-colors"
                   />
                 )}
               </motion.div>
@@ -145,7 +145,7 @@ export default function BudgetPage() {
                 className={`h-full rounded-full bg-gradient-to-r ${fillColor}`}
               />
             </div>
-            <div className="flex justify-between font-mono text-[0.65rem] text-muted">
+            <div className="flex justify-between font-ui text-sm text-ink">
               <span>₹0</span><span>{fmt(budget)}</span>
             </div>
           </div>
@@ -202,7 +202,7 @@ export default function BudgetPage() {
               ))}
             </AnimatePresence>
             {expenses.length === 0 && (
-              <p className="font-display italic text-muted text-center py-10">No expenses yet.</p>
+              <p className="font-ui text-base font-medium text-ink text-center py-10">No expenses yet.</p>
             )}
           </div>
         </>

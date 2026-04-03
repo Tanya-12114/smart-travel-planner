@@ -123,7 +123,7 @@ export default function DiscoverPage() {
             className="input-base w-full font-display text-base pr-10"
           />
           {searching && (
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-[0.6rem] text-muted animate-pulse">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 font-ui text-sm text-ink animate-pulse">
               searching…
             </span>
           )}
@@ -137,7 +137,7 @@ export default function DiscoverPage() {
       </div>
 
       {/* Result count hint */}
-      <p className="font-mono text-[0.62rem] uppercase tracking-widest text-muted mb-8">
+      <p className="font-ui text-sm text-ink mb-8">
         {query.trim()
           ? `${results.length} destination${results.length !== 1 ? "s" : ""} found`
           : `${DESTINATIONS.length} featured destinations`}
@@ -163,12 +163,12 @@ export default function DiscoverPage() {
                 <div className="flex flex-col items-end gap-1">
                   <span className="tag-pill">{dest.badge}</span>
                   {dest.isDynamic && (
-                    <span className="font-mono text-[0.55rem] text-muted/60 uppercase tracking-wider">live</span>
+                    <span className="font-ui text-sm text-ink tracking-normal">live</span>
                   )}
                 </div>
               </div>
               <h3 className="font-display text-lg font-semibold text-ink">{dest.name}</h3>
-              <p className="font-mono text-[0.62rem] uppercase tracking-wider text-muted mt-0.5">{dest.country}</p>
+              <p className="font-ui text-sm font-medium text-ink mt-0.5">{dest.country}</p>
               <div className="flex flex-wrap gap-1 mt-3">
                 {dest.tags.slice(0, 2).map((t) => (
                   <span key={t} className="tag-pill">{t}</span>
@@ -186,8 +186,8 @@ export default function DiscoverPage() {
             className="col-span-full text-center py-16"
           >
             <p className="text-3xl mb-3">◎</p>
-            <p className="font-display italic text-muted text-lg">No results for &ldquo;{query}&rdquo;</p>
-            <p className="font-mono text-[0.65rem] text-muted/60 mt-2 uppercase tracking-wider">Try a different spelling or broader term</p>
+            <p className="font-ui text-base font-medium text-ink text-lg">No results for &ldquo;{query}&rdquo;</p>
+            <p className="font-ui text-sm text-ink mt-2">Try a different spelling or broader term</p>
           </motion.div>
         )}
 
@@ -230,14 +230,14 @@ export default function DiscoverPage() {
               </button>
             </div>
 
-            <p className="text-sm text-muted font-ui mb-2">
+            <p className="text-sm text-ink font-ui mb-2">
               <strong className="text-ink">📍 {selected.country}</strong>
               &nbsp;·&nbsp;
               <strong className="text-ink">🗓 Best time:</strong> {selected.bestTime}
               &nbsp;·&nbsp;
               <strong className="text-ink">💰 Avg cost:</strong> {selected.avgCost}
             </p>
-            <p className="font-display italic text-ink/80 text-base leading-relaxed">
+            <p className="font-ui text-base text-ink text-base leading-relaxed">
               {selected.description}
             </p>
           </motion.div>

@@ -269,7 +269,7 @@ export default function WeatherPage() {
                 <p className="font-display text-6xl font-black text-blue-300 tracking-tight">
                   {data.current.temp}°C
                 </p>
-                <p className="font-mono text-[0.7rem] uppercase tracking-widest text-muted mt-2">
+                <p className="font-ui text-sm text-ink/70 mt-2">
                   {data.current.desc}
                 </p>
               </div>
@@ -277,9 +277,9 @@ export default function WeatherPage() {
                 {[["Humidity", data.current.humidity+"%"],["Wind",data.current.wind],
                   ["Visibility",data.current.visibility],["Feels like",data.current.feelsLike+"°C"]
                 ].map(([k,v]) => (
-                  <div key={k} className="flex gap-3 font-mono text-[0.7rem]">
-                    <span className="text-muted">{k}</span>
-                    <span className="text-white/60">{v}</span>
+                  <div key={k} className="flex gap-3 font-ui text-sm">
+                    <span className="text-white/70">{k}</span>
+                    <span className="text-white font-medium">{v}</span>
                   </div>
                 ))}
               </div>
@@ -292,7 +292,7 @@ export default function WeatherPage() {
                   transition={{ delay: i * 0.06 }}
                   className="bg-white border border-sand rounded-lg px-2 py-4 text-center"
                 >
-                  <p className="font-mono text-[0.6rem] uppercase tracking-widest text-muted mb-2">{day.day}</p>
+                  <p className="font-ui text-sm font-medium text-ink mb-2">{day.day}</p>
                   <div className="flex justify-center mb-2">
                     <WeatherIcon type={resolveType(day.icon)} size="sm" />
                   </div>
@@ -339,16 +339,16 @@ export default function WeatherPage() {
                         </p>
                       </div>
                     </div>
-                    <p className="font-mono text-[0.65rem] uppercase tracking-widest text-muted mb-3">
+                    <p className="font-ui text-sm font-medium text-ink mb-3">
                       {w.current.desc}
                     </p>
                     <div className="grid grid-cols-2 gap-1">
                       {[["Humidity", w.current.humidity+"%"],["Wind",w.current.wind],
                         ["Feels like",w.current.feelsLike+"°C"],["Visibility",w.current.visibility]
                       ].map(([k,v]) => (
-                        <div key={k} className="flex gap-2 font-mono text-[0.65rem]">
-                          <span className="text-muted">{k}</span>
-                          <span className="text-white/60">{v}</span>
+                        <div key={k} className="flex gap-2 font-ui text-sm">
+                          <span className="text-white/70">{k}</span>
+                          <span className="text-white font-medium">{v}</span>
                         </div>
                       ))}
                     </div>
@@ -358,11 +358,11 @@ export default function WeatherPage() {
             </>
           ) : (
             <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }}
-              className="text-center py-16 text-muted"
+              className="text-center py-16 text-ink"
             >
-              <p className="text-5xl mb-4">◐</p>
-              <p className="font-display italic text-xl mb-2">No itinerary trips yet.</p>
-              <p className="font-mono text-[0.65rem] uppercase tracking-widest text-muted/60">
+              <p className="text-3xl mb-4 text-ink/40">—</p>
+              <p className="font-ui text-base font-normal text-ink mb-2">No itinerary trips yet.</p>
+              <p className="font-ui text-sm text-ink">
                 Add destinations in Discover to see their weather here
               </p>
             </motion.div>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -26,11 +26,11 @@
   /* Removed grain overlay — clean look */
 
   .eyebrow {
-    @apply font-mono text-[0.65rem] uppercase tracking-[0.16em] text-accent font-medium;
+    @apply font-ui text-sm text-ink/50 font-normal tracking-normal;
   }
 
   .page-title {
-    @apply font-display text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-ink;
+    @apply font-display text-4xl lg:text-5xl font-bold leading-snug tracking-normal text-ink;
   }
 
   .page-title em {
@@ -70,7 +70,7 @@
   }
 
   .tag-pill {
-    @apply bg-paper text-muted font-mono text-[0.6rem] tracking-wider uppercase
+    @apply bg-paper text-muted font-ui text-xs tracking-normal
            px-2 py-0.5 rounded border border-sand;
   }
 }

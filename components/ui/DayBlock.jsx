@@ -104,7 +104,7 @@ export default function DayBlock({ day, dayIndex, totalDays, onUpdate, onDelete,
           );
         })}
         {(!day.events || day.events.length === 0) && (
-          <p className="text-muted/50 text-sm px-1 py-2 italic">No events yet.</p>
+          <p className="text-ink text-sm px-1 py-2">No events yet.</p>
         )}
       </div>
 

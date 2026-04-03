@@ -14,16 +14,16 @@ module.exports = {
         accent:     "#2563eb",          // clean blue — replaces rust/orange
         "accent-lt":"#eff4ff",          // very light blue tint
         "accent-dk":"#1d4ed8",          // darker blue for hover
-        muted:      "#6b7280",          // neutral grey
+        muted:      "#374151",          // neutral grey
         cream:      "#ffffff",          // pure white cards (was warm cream)
         forest:     "#166534",
         "forest-lt":"#16a34a",
       },
       fontFamily: {
-        // Clean, modern, humanist sans-serif stack
-        display: ["'Plus Jakarta Sans'", "system-ui", "sans-serif"],
-        mono:    ["'JetBrains Mono'", "monospace"],
-        ui:      ["'Plus Jakarta Sans'", "system-ui", "sans-serif"],
+        // Normal, highly readable sans-serif stack
+        display: ["'Roboto'", "system-ui", "sans-serif"],
+        mono:    ["'Roboto Mono'", "monospace"],
+        ui:      ["'Roboto'", "system-ui", "sans-serif"],
       },
       animation: {
         "fade-up":    "fadeUp 0.35s ease both",

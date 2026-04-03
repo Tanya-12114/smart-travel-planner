@@ -62,7 +62,7 @@ export default function MapPage() {
         {(loading || locStatus === "pending") && (
           <div className="absolute inset-0 flex items-center justify-center bg-paper z-10 flex-col gap-3">
             <div className="animate-spin rounded-full h-8 w-8 border-2 border-sand border-t-accent" />
-            <p className="font-mono text-[0.65rem] uppercase tracking-widest text-muted">
+            <p className="font-ui text-sm text-ink">
               {loading ? "Loading trips…" : "Getting your location…"}
             </p>
           </div>
@@ -78,7 +78,7 @@ export default function MapPage() {
         {userLocation && activeTrip && (
           <div className="absolute top-4 left-4 bg-ink/80 rounded-lg px-3 py-1.5 z-10 flex items-center gap-2">
             <span className="text-sm">✈</span>
-            <p className="font-mono text-[0.6rem] uppercase tracking-widest text-white/70">
+            <p className="font-ui text-sm tracking-normal text-white/70">
               Route to {activeTrip.destination || activeTrip.title}
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function MapPage() {
 
         {/* Empty state */}
         {!loading && mappable.length === 0 && (
-          <div className="absolute inset-0 flex items-center justify-center flex-col gap-3 text-muted z-10">
+          <div className="absolute inset-0 flex items-center justify-center flex-col gap-3 text-ink z-10">
             <span className="text-4xl">◎</span>
             <p className="font-display italic text-lg">
               Add destinations from Discover to plot your route.
@@ -122,11 +122,11 @@ export default function MapPage() {
                         {t.destination || t.title}
                       </p>
                     </div>
-                    <p className={`font-mono text-[0.6rem] uppercase tracking-wider ${isActive ? "text-white/70" : "text-muted"}`}>
+                    <p className={`font-ui text-sm tracking-normal ${isActive ? "text-white" : "text-ink"}`}>
                       {t.days?.length ?? 0} day{t.days?.length !== 1 ? "s" : ""} planned
                     </p>
                     {isActive && (
-                      <p className="font-mono text-[0.58rem] uppercase tracking-wider text-white/60 mt-1.5">
+                      <p className="font-ui text-sm tracking-normal text-white/60 mt-1.5">
                         ✈ Route shown
                       </p>
                     )}

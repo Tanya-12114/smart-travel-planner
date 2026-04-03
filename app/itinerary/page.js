@@ -82,7 +82,7 @@ export default function ItineraryPage() {
   if (loading) {
     return (
       <div className="p-12 flex items-center justify-center min-h-screen">
-        <p className="font-display italic text-muted text-xl animate-pulse">Loading trips…</p>
+        <p className="font-ui text-base font-medium text-ink animate-pulse">Loading trips…</p>
       </div>
     );
   }
@@ -107,18 +107,18 @@ export default function ItineraryPage() {
               {t.title}
             </button>
           ))}
-          <button onClick={createTrip} className="font-mono text-xs text-accent hover:text-ink transition-colors">
+          <button onClick={createTrip} className="font-mono text-sm text-accent hover:text-ink transition-colors">
             + New Trip
           </button>
         </div>
         <div className="flex gap-2">
-          {saving && <span className="font-mono text-[0.65rem] text-muted animate-pulse self-center">Saving…</span>}
+          {saving && <span className="font-ui text-sm text-ink animate-pulse self-center">Saving…</span>}
           {activeTrip && (
             <>
               <button onClick={addDay} className="btn-ghost text-xs">+ Add Day</button>
               <button
                 onClick={() => deleteTrip(activeTrip._id)}
-                className="border border-sand text-muted font-ui text-xs px-3 py-2 rounded hover:border-red-400 hover:text-red-500 transition-all"
+                className="border border-sand text-muted font-ui text-sm px-3 py-2 rounded hover:border-red-400 hover:text-red-500 transition-all"
               >Delete Trip</button>
             </>
           )}
@@ -159,7 +159,7 @@ export default function ItineraryPage() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-20 text-muted"
+              className="text-center py-20 text-ink"
             >
               <p className="text-4xl mb-4">◎</p>
               <p className="font-display italic text-lg">No days yet. Add one to start planning.</p>
@@ -170,7 +170,7 @@ export default function ItineraryPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="text-center py-24 text-muted"
+          className="text-center py-24 text-ink"
         >
           <p className="text-4xl mb-4">◈</p>
           <p className="font-display italic text-xl mb-6">No trips yet.</p>
