@@ -1,5 +1,12 @@
 // server/index.js
-require("dotenv").config({ path: ".env.local" });
+const path = require("path");
+const envPath = path.resolve(__dirname, "../.env.local");
+require("dotenv").config({ path: envPath });
+
+// Add these two diagnostic logs:
+console.log("🔍 Server looking for .env file at:", envPath);
+console.log("🔍 Value parsed from MONGO_URI:", process.env.MONGO_URI);
+
 const express    = require("express");
 const cors       = require("cors");
 const mongoose   = require("mongoose");
@@ -27,10 +34,14 @@ app.use("/api/weather",  weatherRoutes);  // public
 app.get("/api/health", (_, res) => res.json({ status: "ok", time: new Date() }));
 
 // ── MongoDB ─────────────────────────────────────────────
+// 2. Fixed variable naming mismatch: changed MONGODB_URI to MONGO_URI
+const mongoURI = process.env.MONGO_URI; 
+const dbName = process.env.MONGO_DB_NAME || "voyagr";
+
 mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/voyagr")
+  .connect(mongoURI, { dbName: dbName })
   .then(() => {
-    console.log("✅  MongoDB connected");
+    console.log(`✅  MongoDB connected to cluster database: ${dbName}`);
     app.listen(PORT, () =>
       console.log(`🚀  Express server running on http://localhost:${PORT}`)
     );
