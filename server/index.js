@@ -1,12 +1,5 @@
 // server/index.js
-const path = require("path");
-const envPath = path.resolve(__dirname, "../.env.local");
-require("dotenv").config({ path: envPath });
-
-// Add these two diagnostic logs:
-console.log("🔍 Server looking for .env file at:", envPath);
-console.log("🔍 Value parsed from MONGO_URI:", process.env.MONGO_URI);
-
+require("dotenv").config({ path: ".env.local" });
 const express    = require("express");
 const cors       = require("cors");
 const mongoose   = require("mongoose");
@@ -21,7 +14,14 @@ const app  = express();
 const PORT = process.env.PORT || 5000;
 
 // ── Middleware ──────────────────────────────────────────
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+// CLIENT_ORIGIN should be your deployed Vercel URL in production,
+// e.g. https://your-app.vercel.app (set as an env var on the host).
+app.use(
+  cors({
+    origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser()); // needed to read req.cookies
 
@@ -34,14 +34,10 @@ app.use("/api/weather",  weatherRoutes);  // public
 app.get("/api/health", (_, res) => res.json({ status: "ok", time: new Date() }));
 
 // ── MongoDB ─────────────────────────────────────────────
-// 2. Fixed variable naming mismatch: changed MONGODB_URI to MONGO_URI
-const mongoURI = process.env.MONGO_URI; 
-const dbName = process.env.MONGO_DB_NAME || "voyagr";
-
 mongoose
-  .connect(mongoURI, { dbName: dbName })
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/voyagr")
   .then(() => {
-    console.log(`✅  MongoDB connected to cluster database: ${dbName}`);
+    console.log("✅  MongoDB connected");
     app.listen(PORT, () =>
       console.log(`🚀  Express server running on http://localhost:${PORT}`)
     );
