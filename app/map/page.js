@@ -2,9 +2,23 @@
 import { WarningIcon, FlightIcon, GlobeIcon } from "@/components/ui/Icons";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import TravelMap from "@/components/map/TravelMap";
+import dynamic from "next/dynamic";
 import { tripsApi } from "@/lib/api";
 import PageHeader from "@/components/ui/PageHeader";
+
+// Leaflet touches `window`/`document` as soon as it's imported (e.g. L.divIcon
+// at module scope in TravelMap.jsx). Next.js still renders client components
+// once on the server during build/SSR, which crashes with
+// "ReferenceError: window is not defined". ssr:false keeps this component
+// out of server rendering entirely, loading it only in the browser.
+const TravelMap = dynamic(() => import("@/components/map/TravelMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 flex items-center justify-center bg-paper">
+      <div className="animate-spin rounded-full h-8 w-8 border-2 border-sand border-t-accent" />
+    </div>
+  ),
+});
 
 export default function MapPage() {
   const [trips,        setTrips]        = useState([]);
