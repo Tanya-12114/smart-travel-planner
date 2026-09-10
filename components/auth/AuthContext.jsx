@@ -11,9 +11,10 @@ const AuthContext = createContext(null);
 const PUBLIC_ROUTES = ["/login", "/register"];
 
 export function AuthProvider({ children }) {
-  const [user,    setUser]    = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [slow,    setSlow]    = useState(false);
+  const [user,       setUser]       = useState(null);
+  const [loading,    setLoading]    = useState(true);
+  const [slow,       setSlow]       = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
   const router   = useRouter();
   const pathname = usePathname();
 
@@ -53,9 +54,22 @@ export function AuthProvider({ children }) {
   }
 
   async function logout() {
-    await authApi.logout();
+    setLoggingOut(true);
+    // Clear local state and navigate right away — the JWT cookie is
+    // httpOnly (unreadable by JS either way), so there's nothing the UI
+    // gains by waiting on the network call. Fire it in the background;
+    // if the backend is cold-starting, the user isn't stuck staring at
+    // a frozen button for it.
     setUser(null);
     router.push("/login");
+    try {
+      await authApi.logout();
+    } catch {
+      // Cookie clearing failed silently server-side is still possible;
+      // client-side state is already cleared, which is what matters for UX.
+    } finally {
+      setLoggingOut(false);
+    }
   }
 
   if (loading) {
@@ -72,7 +86,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading, loggingOut }}>
       {children}
     </AuthContext.Provider>
   );

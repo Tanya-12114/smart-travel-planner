@@ -71,7 +71,14 @@ router.post("/login", async (req, res) => {
 
 // ── POST /api/auth/logout ─────────────────────────────────────
 router.post("/logout", (req, res) => {
-  res.clearCookie("token");
+  // clearCookie must be called with the SAME sameSite/secure/path
+  // attributes used when the cookie was originally set, or the browser
+  // won't recognise it as the same cookie and will silently keep it.
+  res.clearCookie("token", {
+    httpOnly: COOKIE_OPTS.httpOnly,
+    secure:   COOKIE_OPTS.secure,
+    sameSite: COOKIE_OPTS.sameSite,
+  });
   res.json({ message: "Logged out" });
 });
 
