@@ -1,37 +1,9 @@
 // server/index.js
 require("dotenv").config({ path: ".env.local" });
-const express    = require("express");
-const cors       = require("cors");
-const mongoose   = require("mongoose");
-const cookieParser = require("cookie-parser");
+const mongoose = require("mongoose");
+const app      = require("./app");
 
-const authRoutes    = require("./routes/auth");
-const tripRoutes    = require("./routes/trips");
-const expenseRoutes = require("./routes/expenses");
-const weatherRoutes = require("./routes/weather");
-
-const app  = express();
 const PORT = process.env.PORT || 5000;
-
-// ── Middleware ──────────────────────────────────────────
-// CLIENT_ORIGIN should be your deployed Vercel URL in production,
-// e.g. https://your-app.vercel.app (set as an env var on the host).
-app.use(
-  cors({
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
-    credentials: true,
-  })
-);
-app.use(express.json());
-app.use(cookieParser()); // needed to read req.cookies
-
-// ── Routes ──────────────────────────────────────────────
-app.use("/api/auth",     authRoutes);     // public
-app.use("/api/trips",    tripRoutes);     // protected
-app.use("/api/expenses", expenseRoutes);  // protected (via trips)
-app.use("/api/weather",  weatherRoutes);  // public
-
-app.get("/api/health", (_, res) => res.json({ status: "ok", time: new Date() }));
 
 // ── MongoDB ─────────────────────────────────────────────
 mongoose
