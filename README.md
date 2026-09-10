@@ -13,6 +13,8 @@ A full-stack travel planning app built with **Next.js**, **Tailwind CSS**, **Fra
 | Animations | Framer Motion                     |
 | Backend    | Node.js + Express.js              |
 | Database   | MongoDB + Mongoose                |
+| Testing (backend)  | Jest + Supertest          |
+| Testing (frontend) | Vitest + React Testing Library |
 | Fonts      | Google Fonts (Plus Jakarta Sans, JetBrains Mono) |
 
 ---
@@ -53,6 +55,31 @@ npm run next:build
 npm run next:start    # Next.js
 npm run server:start  # Express
 ```
+
+---
+
+## Testing
+
+The project has two separate test suites — one for the Express backend, one for the React frontend.
+
+### Run backend tests (Jest + Supertest)
+```bash
+npm test
+```
+Covers the `/api/auth` and `/api/trips` routes: request validation, authentication/authorization checks, and CRUD logic. Mongoose models are mocked, so no real database connection is needed to run these.
+
+### Run frontend tests (Vitest + React Testing Library)
+```bash
+npm run test:frontend
+```
+Covers the `LoginPage` and `RegisterPage` components: form rendering, input handling, submit behavior, client-side validation (e.g. blocking submission on mismatched passwords), and loading/error states. `useAuth()` is mocked so tests run against component logic only, not the live API.
+
+### Run everything
+```bash
+npm run test:all
+```
+
+**Current coverage:** 24 tests total — 16 backend, 8 frontend, all passing.
 
 ---
 

@@ -9,7 +9,9 @@
     "next:start": "next start",
     "server:dev": "nodemon server/index.js",
     "server:start": "node server/index.js",
-    "test": "jest"
+    "test": "jest",
+    "test:frontend": "vitest run",
+    "test:all": "npm run test && npm run test:frontend"
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
@@ -30,9 +32,17 @@
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
+    "@vitejs/plugin-react": "^4.7.0",
     "concurrently": "^9.1.2",
     "jest": "^30.5.1",
+    "jsdom": "^30.0.1",
     "nodemon": "^3.1.9",
-    "supertest": "^7.2.2"
+    "supertest": "^7.2.2",
+    "vite": "^5.4.21",
+    "vitest": "^2.1.9"
   }
 }
