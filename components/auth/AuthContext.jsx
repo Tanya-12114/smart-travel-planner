@@ -13,11 +13,17 @@ const PUBLIC_ROUTES = ["/login", "/register"];
 export function AuthProvider({ children }) {
   const [user,    setUser]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [slow,    setSlow]    = useState(false);
   const router   = useRouter();
   const pathname = usePathname();
 
   // Check session on mount
   useEffect(() => {
+    // If the backend is cold-starting (free-tier hosts sleep when idle),
+    // this can take a while — let the user know instead of showing a
+    // blank spinner that looks frozen.
+    const slowTimer = setTimeout(() => setSlow(true), 4000);
+
     authApi.me()
       .then((u) => {
         setUser(u);
@@ -26,7 +32,12 @@ export function AuthProvider({ children }) {
           router.replace("/login");
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        clearTimeout(slowTimer);
+        setLoading(false);
+      });
+
+    return () => clearTimeout(slowTimer);
   }, []);
 
   async function login(email, password) {
@@ -49,8 +60,13 @@ export function AuthProvider({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-paper">
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-paper">
         <div className="animate-spin rounded-full h-8 w-8 border-2 border-sand border-t-accent" />
+        {slow && (
+          <p className="text-sm text-slate-500 max-w-xs text-center">
+            Waking up the server — this can take up to a minute on the first visit.
+          </p>
+        )}
       </div>
     );
   }
