@@ -4,7 +4,7 @@
 #   --target api  -> Express backend  (port 5000)
 #   --target dev  -> full source + devDependencies, for docker-compose.dev.yml
 
-ARG NODE_VERSION=20
+ARG NODE_VERSION=22
 
 # ── Install all dependencies (cached unless package files change) ──
 FROM node:${NODE_VERSION}-alpine AS deps
