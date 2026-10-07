@@ -6,13 +6,21 @@ const User    = require("../models/User");
 const authMiddleware = require("../middleware/auth");
 
 const JWT_SECRET  = process.env.JWT_SECRET  || "voyagr_dev_secret_change_in_production";
+// COOKIE_SECURE can override the NODE_ENV default. Needed when running the
+// production build over plain http (e.g. docker compose on localhost), where
+// Secure cookies are rejected by some browsers (Safari).
+const COOKIE_SECURE =
+  process.env.COOKIE_SECURE !== undefined
+    ? process.env.COOKIE_SECURE === "true"
+    : process.env.NODE_ENV === "production";
+
 const COOKIE_OPTS = {
   httpOnly: true,           // JS cannot read — protects against XSS
-  secure:   process.env.NODE_ENV === "production", // HTTPS only in prod
+  secure:   COOKIE_SECURE,  // HTTPS only in prod
   // Frontend (Vercel) and backend (Render) live on different domains,
-  // so the cookie needs sameSite:"none" in production to be sent cross-site.
-  // "lax" still works for local dev where both run on localhost.
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  // so the cookie needs sameSite:"none" (which requires Secure) in production.
+  // "lax" works for local dev / docker where both run on localhost.
+  sameSite: COOKIE_SECURE ? "none" : "lax",
   maxAge:   7 * 24 * 60 * 60 * 1000, // 7 days
 };
 

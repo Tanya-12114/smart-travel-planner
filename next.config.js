@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Emit a minimal self-contained server in .next/standalone (used by Docker).
+  output: "standalone",
   async rewrites() {
     // This proxy is only for local dev, where the Express server runs on
     // localhost:5000. In production (Vercel), lib/api.js and lib/auth.js
