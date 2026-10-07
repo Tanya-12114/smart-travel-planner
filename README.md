@@ -1,4 +1,4 @@
-# Voyagr — Smart Travel Planner
+# Voyagr — A Smart Travel Planner
 
 A full-stack travel planning app built with **Next.js**, **Tailwind CSS**, **Framer Motion**, **Express.js**, and **MongoDB** with **JWT authentication**, allowing users to register, plan trips, manage itineraries, track travel expenses, visualize destinations on maps, and access weather data.
 
@@ -123,35 +123,3 @@ npm run test:all
 - **Budget** — Track trip expenses in rupees by category (flights, hotels, food, etc.) with an animated progress bar and per-trip budget limit.
  
 - **Weather** — Live 7-day forecast for any city via Open-Meteo (no API key needed). Auto-shows weather for all your itinerary destinations.
-
----
-
-## Docker
-
-Runs MongoDB, the Express API and the Next.js frontend with one command.
-
-```bash
-cp .env.example .env        # then set JWT_SECRET (e.g. openssl rand -hex 32)
-docker compose up --build
-```
-
-- Web: http://localhost:3000
-- API: http://localhost:5000/api/health
-- Data persists in the `mongo-data` volume (`docker compose down -v` wipes it).
-
-**Hot-reload development:**
-```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
-```
-
-**Run the backend tests in a container:**
-```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml run --rm --no-deps api npm test
-```
-
-**Notes**
-- `NEXT_PUBLIC_API_URL` is baked into the frontend at build time and used by the browser, so it must be a browser-reachable URL (default `http://localhost:5000/api`). Changing it requires `docker compose build web`.
-- To use MongoDB Atlas instead of the bundled container, set `MONGODB_URI` in `.env`.
-- `COOKIE_SECURE` defaults to `false` in compose so login works over plain http. Set it to `true` when serving behind HTTPS.
-- `.env.local` is excluded from images via `.dockerignore`; pass configuration through `.env` / compose instead.
-
