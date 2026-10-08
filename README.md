@@ -132,7 +132,8 @@ Runs MongoDB, the Express API and the Next.js frontend with one command.
 
 ```bash
 cp .env.example .env        # then set JWT_SECRET (e.g. openssl rand -hex 32)
-docker compose up --build
+docker compose up --build   or
+docker compose up
 ```
 
 - Web: http://localhost:3000
